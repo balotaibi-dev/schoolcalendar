@@ -1,0 +1,19 @@
+<header class="header">
+  <div class="brand">
+    <img src="logo.png" alt="شعار المدرسة" style="height:60px;width:auto;">
+    <div>
+      <h1>التقويم الدراسي للفصل الأول 1447 هـ</h1>
+      <p>مدارس دار الذكر – قسم البنات</p>
+    </div>
+  </div>
+  <div class="header-fields">
+    <div class="field">
+      <label for="subjectInput">المادة والصف</label>
+      <input id="subjectInput" type="text" placeholder="مثال: العلوم – السادس">
+    </div>
+    <div class="field">
+      <label for="teacherInput">اسم المعلمة</label>
+      <input id="teacherInput" type="text" placeholder="مثال: أ. فاطمة محمد">
+    </div>
+  </div>
+</header>
