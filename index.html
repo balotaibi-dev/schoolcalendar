@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>التقويم الدراسي - الفصل الأول 1447 هـ</title>
+  <style>
+    :root{
+      --primary:#2e7d32;   /* أخضر */
+      --accent:#fbd400;    /* أصفر */
+      --bg:#ffffff;
+      --text:#1a1a1a;
+      --muted:#666;
+      --card:#fcfcfc;
+    }
+    *{box-sizing:border-box}
+    html{direction:rtl}
+    body{margin:0;font-family:Tahoma, Arial, sans-serif;background:var(--bg);color:var(--text)}
+
+    .header{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      padding:1rem;background:linear-gradient(90deg,#fff,#fffbe6);
+      border-bottom:4px solid var(--accent);}
+    .brand h1{margin:0;color:var(--primary);font-size:1.3rem}
+    .brand p{margin:.15rem 0 0;color:var(--muted)}
+
+    .header-fields{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;min-width:320px;}
+    .field{display:flex;flex-direction:column;gap:.25rem}
+    .field label{font-size:.85rem;color:#333}
+    .field input{padding:.55rem .75rem;border:1px solid #ddd;border-radius:10px}
+
+    .container{max-width:1100px;margin:0 auto;padding:1rem}
+    .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+    .btn{background:var(--primary);color:#fff;border:none;border-radius:10px;padding:.6rem 1rem;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+    .search{flex:1;min-width:220px}
+    .search input{width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:10px}
+
+    .card{background:#fff;border:1px solid #eee;border-radius:16px;padding:1rem;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+    .section-title{font-size:1.05rem;border-right:6px solid var(--accent);padding-right:.6rem;margin:0 0 .75rem;color:var(--primary)}
+
+    .tabs{display:flex;gap:.5rem;margin:.5rem 0 1rem}
+    .tab{padding:.5rem .9rem;border-radius:999px;border:1px solid #e5e5e5;cursor:pointer}
+    .tab.active{background:var(--accent);border-color:var(--accent);font-weight:700}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+    @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+    .week{border:1px solid #f0f0f0;border-radius:12px;padding:.75rem;background:var(--card)}
+    .w-title{margin:0 0 .35rem;font-weight:700;color:#333}
+    .w-days{margin:0 0 .35rem;color:#444;font-size:.9rem}
+    .w-notes{width:100%;min-height:60px;padding:.5rem;border:1px solid #ddd;border-radius:10px;resize:vertical;font-size:.9rem;font-family:Tahoma, Arial, sans-serif}
+    @media print{.w-notes{border:none;resize:none;min-height:40px}}
+
+    .events{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    @media (max-width:900px){.events{grid-template-columns:1fr}}
+    .event{display:flex;align-items:flex-start;gap:.6rem;border:1px dashed var(--primary);background:#f7fff7;border-radius:12px;padding:.6rem .75rem}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--primary);margin-top:.4rem}
+    .e-title{margin:0;font-weight:700}
+    .e-sub{margin:.1rem 0 0;color:var(--muted);font-size:.95rem}
+
+    .footer{margin:2rem 0 1rem;color:#777;text-align:center;font-size:.95rem}
+    .print-footer{display:none}
+    .print-header{display:none}
+    @media print{
+      .toolbar,.tabs,.search{display:none !important}
+      .footer{display:none !important}
+      .print-footer{display:flex;justify-content:space-between;align-items:center;
+        margin-top:2cm;border-top:1px solid #ccc;padding-top:.5cm;font-size:14pt}
+      .print-header{display:flex;justify-content:space-between;align-items:center;margin:0 0 1rem;font-weight:700}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <h1>التقويم الدراسي للفصل الأول 1447 هـ</h1>
+      <p>مدارس دار الذكر – قسم البنات</p>
+    </div>
+    <div class="header-fields">
+      <div class="field">
+        <label for="subjectInput">المادة والصف</label>
+        <input id="subjectInput" type="text" placeholder="مثال: العلوم – السادس">
+      </div>
+      <div class="field">
+        <label for="teacherInput">اسم المعلمة</label>
+        <input id="teacherInput" type="text" placeholder="مثال: أ. فاطمة محمد">
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="toolbar">
+      <div class="tabs">
+        <button class="tab active" data-key="weeks" onclick="setTab('weeks')">الأسابيع</button>
+        <button class="tab" data-key="events" onclick="setTab('events')">المناسبات</button>
+      </div>
+      <div class="search"><input id="search" type="search" placeholder="ابحثي عن أسبوع أو مناسبة..." oninput="filterAll(this.value)"></div>
+      <button id="btn-print" class="btn secondary" onclick="window.print()">تحميل كـ PDF</button>
+    </div>
+
+    <div class="print-header">
+      <div id="printSubject">المادة والصف: __________</div>
+      <div id="printTeacher">اسم المعلمة: __________</div>
+    </div>
+
+    <!-- الأسابيع -->
+    <section id="weeks-section" class="card">
+      <h2 class="section-title">الأسابيع الدراسية</h2>
+      <div class="grid">
+        <!-- كررت كل الأسابيع 1–18 -->
+        <div class="week"><p class="w-title">الأسبوع الأول</p><p class="w-days">1 / 3 إلى 5 / 3</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثاني</p><p class="w-days">8 / 3 إلى 12 / 3</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثالث</p><p class="w-days">15 / 3 إلى 19 / 3</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الرابع</p><p class="w-days">22 / 3 إلى 26 / 3</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الخامس</p><p class="w-days">29 / 3 إلى 3 / 4</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع السادس</p><p class="w-days">6 / 4 إلى 10 / 4</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع السابع</p><p class="w-days">13 / 4 إلى 17 / 4</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثامن</p><p class="w-days">20 / 4 إلى 24 / 4</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع التاسع</p><p class="w-days">27 / 4 إلى 1 / 5</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع العاشر</p><p class="w-days">4 / 5 إلى 8 / 5</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الحادي عشر</p><p class="w-days">11 / 5 إلى 15 / 5</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثاني عشر</p><p class="w-days">18 / 5 إلى 22 / 5</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثالث عشر</p><p class="w-days">25 / 5 إلى 29 / 5</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الرابع عشر</p><p class="w-days">9 / 6 إلى 13 / 6</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الخامس عشر</p><p class="w-days">16 / 6 إلى 20 / 6</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع السادس عشر</p><p class="w-days">23 / 6 إلى 27 / 6</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع السابع عشر</p><p class="w-days">1 / 7 إلى 5 / 7</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+        <div class="week"><p class="w-title">الأسبوع الثامن عشر</p><p class="w-days">8 / 7 إلى 12 / 7</p><textarea class="w-notes" placeholder="اكتبي ملاحظات الأسبوع..."></textarea></div>
+      </div>
+    </section>
+
+    <!-- المناسبات -->
+    <section id="events-section" class="card" style="display:none;margin-top:1rem;">
+      <h2 class="section-title">المناسبات والإجازات</h2>
+      <div class="events">
+        <div class="event"><div class="dot"></div><div><p class="e-title">بداية العام الدراسي</p><p class="e-sub">الأحد 1 / 3 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">اليوم الوطني</p><p class="e-sub">الثلاثاء 1 / 4 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">إجازة إضافية</p><p class="e-sub">الأحد 20 / 4 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">إجازة الخريف</p><p class="e-sub">من 30 / 5 إلى 8 / 6 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">إجازة إضافية</p><p class="e-sub">الخميس 20 / 6 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">إجازة إضافية</p><p class="e-sub">الأحد 23 / 6 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">الاختبارات النهائية</p><p class="e-sub">تبدأ الأحد 15 / 7 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">إجازة منتصف العام</p><p class="e-sub">من 20 / 7 إلى 28 / 7 / 1447 هـ</p></div></div>
+        <div class="event"><div class="dot"></div><div><p class="e-title">بداية الفصل الدراسي الثاني</p><p class="e-sub">الأحد 29 / 7 / 1447 هـ</p></div></div>
+      </div>
+    </section>
+
+    <p class="footer">جميع الحقوق محفوظة © مدارس دار الذكر – قسم البنات</p>
+
+    <div class="print-footer">
+      <div>وكيلة المرحلة: بشاير العتيبي</div>
+      <div>مديرة المرحلة: أروى الحكيم</div>
+    </div>
+  </div>
+
+<script>
+  function setTab(key){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.key===key));
+    document.getElementById('weeks-section').style.display = key==='weeks'?'block':'none';
+    document.getElementById('events-section').style.display = key==='events'?'block':'none';
+  }
+  function filterAll(q){
+    q=q.trim();
+    document.querySelectorAll('.week,.event').forEach(el=>{
+      el.style.display = el.textContent.includes(q)?'':'none';
+    });
+  }
+  const subjectInput=document.getElementById('subjectInput');
+  const teacherInput=document.getElementById('teacherInput');
+  const printSubject=document.getElementById('printSubject');
+  const printTeacher=document.getElementById('printTeacher');
+  function sync(){printSubject.textContent='المادة والصف: '+(subjectInput.value||'__________');
+                 printTeacher.textContent='اسم المعلمة: '+(teacherInput.value||'__________');}
+  subjectInput.addEventListener('input',sync);
+  teacherInput.addEventListener('input',sync);
+  sync();
+</script>
+</body>
+</html>
